@@ -1,6 +1,6 @@
 from django.db import models
 
-class Expense(models.Model):
+class Expense(models.Model): # classModel
   amount = models.FloatField()
   merchant = models.CharField(max_length=255)
   description = models.CharField(max_length=255, blank=True, null=True)

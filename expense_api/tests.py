@@ -14,7 +14,7 @@ class ExpenseTest(TestCase):
         "merchant": "Amazon",
         "description": "Django Rest Framework Book", 
         }
-
+      
       res = self.client.post(url, payload, format="json")
       json_resp = res.json()
 
