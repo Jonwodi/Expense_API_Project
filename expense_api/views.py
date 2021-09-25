@@ -6,10 +6,11 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     get_object_or_404,
 )
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from expense_api.authentication import generate_access_token
+from expense_api.authentication import JWTAuthentication, generate_access_token
 
 from .models import Expense
 from .serializers import ExpenseSerializer, UserSerializer
@@ -48,3 +49,18 @@ class SessionCreateView(APIView):
         response.set_cookie(key="jwt", value=token, httponly=True)
         response.data = {"jwt": token}
         return response
+
+
+class SessionRetrieveDestroyView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    """
+    Gets current user based on cookie session created
+    authentication_classes will also update request with an authenticated
+    user e.g request.user
+    """
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response({"data": serializer.data})
